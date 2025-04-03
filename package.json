@@ -6,7 +6,9 @@
     "start": "node src/index.js",
     "dev": "nodemon src/index.js",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "test-db": "node src/config/testConnection.js"
+    "test-db": "node src/config/testConnection.js",
+    "test-mongo": "node src/config/testMongoConnection.js",
+    "check-mongo": "node src/config/checkLocalMongo.js"
   },
   "keywords": [],
   "author": "",
@@ -16,6 +18,7 @@
     "@types/express": "^5.0.1",
     "@types/node": "^22.13.16",
     "bcryptjs": "^3.0.2",
+    "cookie-parser": "^1.4.7",
     "cors": "^2.8.5",
     "dotenv": "^16.4.7",
     "express": "^5.1.0",
