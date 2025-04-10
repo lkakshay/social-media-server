@@ -49,9 +49,15 @@ exports.register = async (req, res) => {
 
     // Send access token and user info in response body
     res.status(201).json({
-      _id: user._id,
-      username: user.username,
-      email: user.email,
+      user: {
+        _id: user._id,
+        username: user.username,
+        email: user.email,
+        profilePicture: user.profilePicture,
+        bio: user.bio,
+        createdAt: user.createdAt,
+        updatedAt: user.updatedAt
+      },
       accessToken
     });
   } catch (error) {
@@ -63,16 +69,20 @@ exports.register = async (req, res) => {
 exports.login = async (req, res) => {
   try {
     const { email, password } = req.body;
-
+   
     // Find user by email
     const user = await User.findOne({ email });
+  
     if (!user) {
+    
       return res.status(401).json({ message: 'Invalid credentials' });
+    
     }
 
     // Check password
     const isMatch = await user.comparePassword(password);
     if (!isMatch) {
+      
       return res.status(401).json({ message: 'Invalid credentials' });
     }
 
@@ -89,9 +99,15 @@ exports.login = async (req, res) => {
 
     // Send access token and user info in response body
     res.json({
-      _id: user._id,
-      username: user.username,
-      email: user.email,
+      user: {
+        _id: user._id,
+        username: user.username,
+        email: user.email,
+        profilePicture: user.profilePicture,
+        bio: user.bio,
+        createdAt: user.createdAt,
+        updatedAt: user.updatedAt
+      },
       accessToken
     });
   } catch (error) {
@@ -117,7 +133,20 @@ exports.refreshToken = async (req, res) => {
     }
 
     const newAccessToken = generateAccessToken(decoded.id);
-    res.json({ accessToken: newAccessToken });
+    
+    // Send user details along with the new access token
+    res.json({
+      user: {
+        _id: user._id,
+        username: user.username,
+        email: user.email,
+        profilePicture: user.profilePicture,
+        bio: user.bio,
+        createdAt: user.createdAt,
+        updatedAt: user.updatedAt
+      },
+      accessToken: newAccessToken
+    });
 
   } catch (error) {
     // Handle expired refresh token or invalid token
